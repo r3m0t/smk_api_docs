@@ -12,13 +12,13 @@
       <h1><a href="http://smarkets.github.com/"><img src="logo.gif" class="logo" /></a>
           <a href=""><span>Streaming API Documentation</span></a></h1>
       <ul>
-        <li><strong>(v0.2.2)</strong></li>
+        <li><strong>(v0.3.0)</strong></li>
         <li><a href="">Introduction</a></li>
         <li><a href="#encode">Encoding Payloads</a></li>
         <li><a href="#framing">Framing</a></li>
         <li>
           <div style="margin-bottom:0.5em;"><a href="#defs">Type Definitions</a></div>
-          <a href="#seto">seto</a> (v0.2.1)
+          <a href="#seto">seto</a> (v0.3.0)
           <ul>
             
             <li><a href="#seto/content-type">content-type</a></li>
@@ -97,6 +97,8 @@
             
             <li><a href="#seto/order-executed">order-executed</a></li>
             
+            <li><a href="#seto/order-execution">order-execution</a></li>
+            
             <li><a href="#seto/order-invalid">order-invalid</a></li>
             
             <li><a href="#seto/order-invalid-reason">order-invalid-reason</a></li>
@@ -104,6 +106,18 @@
             <li><a href="#seto/order-rejected">order-rejected</a></li>
             
             <li><a href="#seto/order-rejected-reason">order-rejected-reason</a></li>
+            
+            <li><a href="#seto/order-state">order-state</a></li>
+            
+            <li><a href="#seto/order-status">order-status</a></li>
+            
+            <li><a href="#seto/orders-for-contract">orders-for-contract</a></li>
+            
+            <li><a href="#seto/orders-for-market">orders-for-market</a></li>
+            
+            <li><a href="#seto/orders-for-market-request">orders-for-market-request</a></li>
+            
+            <li><a href="#seto/orders-for-price">orders-for-price</a></li>
             
             <li><a href="#seto/payload">payload</a></li>
             
@@ -130,7 +144,7 @@
             <li><a href="#seto/uuid-128">uuid-128</a></li>
             
           </ul>
-          <a href="#eto">eto</a> (v0.2.0)
+          <a href="#eto">eto</a> (v0.2.1)
           <ul>
             
             <li><a href="#eto/login">login</a></li>
@@ -164,7 +178,7 @@
       To work with the Smarkets Streaming API you will need to:
       <ol class="steps">
         <li>
-        Create a persistent TCP connection to <code>api-sandbox.smarkets.com:3701</code>
+        Create a secure persistent TCP connection to <code>api-sandbox.smarkets.com:3701</code>
         </li>
         <li>
         <a href="#encode">Encode</a>, <a href="#framing">Frame</a>, and send a <a href="#seto/payload" class="type">seto/payload</a> with type <a href="#seto/login" class="type">login</a> and its <a href="#eto/payload" class="type">eto/payload</a> with <a href="#eto/seq">seq</a> <span class="seq">1</span>
@@ -542,7 +556,7 @@ contract_quotes{
   bids = [
     quote{
       price = 5000,
-      quantity = 200000
+      quantity = 100000
     }
   ]
 }
@@ -591,6 +605,10 @@ contract_quotes{
     quote{
       price = 4500,
       quantity = 400000
+    },
+    quote{
+      price = 5000,
+      quantity = 0
     }
   ],
   offers = [
@@ -609,7 +627,8 @@ contract_quotes{
 }
 </pre></code>
         <ul>
-        <li class="event">Get rid of 50% available for a seller to take due to receiving 1 worse price from outside the depth size.</li>
+          <li class="event">Get rid of 50% available for a seller to take due to receiving 1 worse price from outside the depth size and 
+          a new 5000 quantity of 0.</li>
         <li class="event">Move prices over to fill in where 50% used to live and add the 45% we were just told.</li>
         <li class="event">
           Push over the worse sell quotes to the left and fit in the 50% available for someone to buy.
@@ -656,6 +675,10 @@ contract_quotes{
   contract = ...,
   offers = [
     quote{
+      price = 5000,
+      quantity = 0
+    },
+    quote{
       price = 5100,
       quantity = 20000
     }
@@ -675,7 +698,7 @@ contract_quotes{
 }
 </pre></code>
         <ul>
-          <li class="event">Remove 50% due to execution and an extra price coming in from outside the depth size of 5.</li>
+          <li class="event">Remove 50% due to execution, a new quantity of 0, and an extra price coming in from outside the depth size of 5.</li>
           <li class="event">Update 51% to quantity 20000</li>
         </ul>
       </td>
@@ -712,7 +735,7 @@ contract_quotes{
 <code><pre>
 contract_quotes{
   contract = ...,
-  offers = [
+  bids = [
     quote{
       price = 4800,
       quantity = 0
@@ -974,6 +997,26 @@ contract_quotes{
           
           <li>
           <span class="name">generic</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">tennis-player-a</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">tennis-player-b</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">home-team</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">away-team</span>
           
           </li>
           
@@ -2490,6 +2533,53 @@ The <a href="#seto/price" class="type">price</a> here may differ from that of th
       
       
       <div class="def">
+        <h3 id="seto/order-execution">
+          <span class="name">seto/order-execution</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">price</span>
+          <span>(<span class="type">uint32</span>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">quantity</span>
+          <span>(<span class="type">uint32</span>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">microseconds</span>
+          <span>(<a href="#seto/microseconds" class="type">seto/microseconds</a>)</span>
+
+          
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
         <h3 id="seto/order-invalid">
           <span class="name">seto/order-invalid</span>
           <span class="piqi_type">record</span>
@@ -2656,6 +2746,331 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           </li>
           
         </ul>
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/order-state">
+          <span class="name">seto/order-state</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">order</span>
+          <span>(<a href="#seto/order" class="type">seto/order</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">type</span>
+          <span>(<a href="#seto/order-create-type" class="type">seto/order-create-type</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">status</span>
+          <span>(<a href="#seto/order-status" class="type">seto/order-status</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">quantity-type</span>
+          <span>(<a href="#seto/quantity-type" class="type">seto/quantity-type</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">quantity</span>
+          <span>(<span class="type">uint32</span>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">created-microseconds</span>
+          <span>(<a href="#seto/microseconds" class="type">seto/microseconds</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">executions</span>
+          <span>(<a href="#seto/order-execution" class="type">seto/order-execution</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">filled-quantity</span>
+          <span>(<span class="type">uint32</span>)</span>
+
+          
+          <span class="default">Default: 0</span>
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">cancelled-microseconds</span>
+          <span>(<a href="#seto/microseconds" class="type">seto/microseconds</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/order-status">
+          <span class="name">seto/order-status</span>
+          <span class="piqi_type">enum</span>
+          
+        </h4>
+
+        
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">open</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">partially-filled</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">filled</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">partially-cancelled</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">cancelled</span>
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/orders-for-contract">
+          <span class="name">seto/orders-for-contract</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">contract</span>
+          <span>(<a href="#seto/contract" class="type">seto/contract</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">bids</span>
+          <span>(<a href="#seto/orders-for-price" class="type">seto/orders-for-price</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">offers</span>
+          <span>(<a href="#seto/orders-for-price" class="type">seto/orders-for-price</a>)</span>
+
+          
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/orders-for-market">
+          <span class="name">seto/orders-for-market</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">market</span>
+          <span>(<a href="#seto/market" class="type">seto/market</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">price-type</span>
+          <span>(<a href="#seto/price-type" class="type">seto/price-type</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">contracts</span>
+          <span>(<a href="#seto/orders-for-contract" class="type">seto/orders-for-contract</a>)</span>
+
+          
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/orders-for-market-request">
+          <span class="name">seto/orders-for-market-request</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">market</span>
+          <span>(<a href="#seto/market" class="type">seto/market</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">with-executions</span>
+          <span>(<span class="type">bool</span>)</span>
+
+          
+          <span class="default">Default: false</span>
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/orders-for-price">
+          <span class="name">seto/orders-for-price</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">price</span>
+          <span>(<span class="type">uint32</span>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">orders</span>
+          <span>(<a href="#seto/order-state" class="type">seto/order-state</a>)</span>
+
+          
+          
+          </li>
+          
+        </ul>
+        
+
         
 
         
@@ -2862,6 +3277,26 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           
           </li>
           
+          <li>
+          <span class="name">orders-for-market-request</span>
+          <span>(<a href="#seto/orders-for-market-request" class="type">seto/orders-for-market-request</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">orders-for-market</span>
+          <span>(<a href="#seto/orders-for-market" class="type">seto/orders-for-market</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
         </ul>
         
 
@@ -2979,6 +3414,16 @@ This is the type <a href="#encode">encoded</a>, <a href="#framing">framed</a>, a
           
           <li>
           <span class="name">order-cancel-rejected</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">orders-for-market-request</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">orders-for-market</span>
           
           </li>
           
