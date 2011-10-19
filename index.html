@@ -12,7 +12,7 @@
       <h1><a href="http://smarkets.github.com/"><img src="logo.gif" class="logo" /></a>
           <a href=""><span>Streaming API Documentation</span></a></h1>
       <ul>
-        <li><strong>(v0.3.0)</strong></li>
+        <li><strong>(v0.3.1)</strong></li>
         <li><a href="">Introduction</a></li>
         <li><a href="#encode">Encoding Payloads</a></li>
         <li><a href="#framing">Framing</a></li>
@@ -97,8 +97,6 @@
             
             <li><a href="#seto/order-executed">order-executed</a></li>
             
-            <li><a href="#seto/order-execution">order-execution</a></li>
-            
             <li><a href="#seto/order-invalid">order-invalid</a></li>
             
             <li><a href="#seto/order-invalid-reason">order-invalid-reason</a></li>
@@ -110,6 +108,10 @@
             <li><a href="#seto/order-state">order-state</a></li>
             
             <li><a href="#seto/order-status">order-status</a></li>
+            
+            <li><a href="#seto/orders-for-account">orders-for-account</a></li>
+            
+            <li><a href="#seto/orders-for-account-request">orders-for-account-request</a></li>
             
             <li><a href="#seto/orders-for-contract">orders-for-contract</a></li>
             
@@ -2533,53 +2535,6 @@ The <a href="#seto/price" class="type">price</a> here may differ from that of th
       
       
       <div class="def">
-        <h3 id="seto/order-execution">
-          <span class="name">seto/order-execution</span>
-          <span class="piqi_type">record</span>
-          
-        </h4>
-
-        
-        <ul>
-          
-          <li>
-          <span class="name">price</span>
-          <span>(<span class="type">uint32</span>)</span>
-
-          
-          
-          </li>
-          
-          <li>
-          <span class="name">quantity</span>
-          <span>(<span class="type">uint32</span>)</span>
-
-          
-          
-          </li>
-          
-          <li>
-          <span class="name">microseconds</span>
-          <span>(<a href="#seto/microseconds" class="type">seto/microseconds</a>)</span>
-
-          
-          
-          </li>
-          
-        </ul>
-        
-
-        
-
-        
-
-      </div>
-      
-      
-      
-      
-      
-      <div class="def">
         <h3 id="seto/order-invalid">
           <span class="name">seto/order-invalid</span>
           <span class="piqi_type">record</span>
@@ -2745,6 +2700,11 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           
           </li>
           
+          <li>
+          <span class="name">market-not-found</span>
+          
+          </li>
+          
         </ul>
         
 
@@ -2815,29 +2775,11 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           </li>
           
           <li>
-          <span class="name">executions</span>
-          <span>(<a href="#seto/order-execution" class="type">seto/order-execution</a>)</span>
-
-          
-          
-          </li>
-          
-          <li>
-          <span class="name">filled-quantity</span>
+          <span class="name">quantity-filled</span>
           <span>(<span class="type">uint32</span>)</span>
 
           
           <span class="default">Default: 0</span>
-          
-          
-          <span class="optional">[optional]</span>
-          
-          </li>
-          
-          <li>
-          <span class="name">cancelled-microseconds</span>
-          <span>(<a href="#seto/microseconds" class="type">seto/microseconds</a>)</span>
-
           
           
           <span class="optional">[optional]</span>
@@ -2870,7 +2812,7 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
         <ul>
           
           <li>
-          <span class="name">open</span>
+          <span class="name">live</span>
           
           </li>
           
@@ -2895,6 +2837,60 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           </li>
           
         </ul>
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/orders-for-account">
+          <span class="name">seto/orders-for-account</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">markets</span>
+          <span>(<a href="#seto/orders-for-market" class="type">seto/orders-for-market</a>)</span>
+
+          
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/orders-for-account-request">
+          <span class="name">seto/orders-for-account-request</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+        </ul>
+        
+
         
 
         
@@ -3014,18 +3010,6 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           <span>(<a href="#seto/market" class="type">seto/market</a>)</span>
 
           
-          
-          </li>
-          
-          <li>
-          <span class="name">with-executions</span>
-          <span>(<span class="type">bool</span>)</span>
-
-          
-          <span class="default">Default: false</span>
-          
-          
-          <span class="optional">[optional]</span>
           
           </li>
           
@@ -3278,6 +3262,26 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           </li>
           
           <li>
+          <span class="name">orders-for-account-request</span>
+          <span>(<a href="#seto/orders-for-account-request" class="type">seto/orders-for-account-request</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">orders-for-account</span>
+          <span>(<a href="#seto/orders-for-account" class="type">seto/orders-for-account</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+          <li>
           <span class="name">orders-for-market-request</span>
           <span>(<a href="#seto/orders-for-market-request" class="type">seto/orders-for-market-request</a>)</span>
 
@@ -3414,6 +3418,16 @@ This is the type <a href="#encode">encoded</a>, <a href="#framing">framed</a>, a
           
           <li>
           <span class="name">order-cancel-rejected</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">orders-for-account-request</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">orders-for-account</span>
           
           </li>
           
@@ -4190,6 +4204,21 @@ If the <a href="#eto/seq" class="type">seq</a> of the <a href="#eto/payload" cla
           
           <li>
           <span class="name">login-not-first-seq</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">unknown-session</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">unauthorised</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">service-temporarily-unavailable</span>
           
           </li>
           
