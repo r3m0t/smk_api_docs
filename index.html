@@ -12,14 +12,20 @@
       <h1><a href="http://smarkets.github.com/"><img src="logo.gif" class="logo" /></a>
           <a href=""><span>Streaming API Documentation</span></a></h1>
       <ul>
-        <li><strong>(v0.3.2)</strong></li>
+        <li><strong>(v0.4.0)</strong></li>
         <li><a href="">Introduction</a></li>
         <li><a href="#encode">Encoding Payloads</a></li>
         <li><a href="#framing">Framing</a></li>
         <li>
           <div style="margin-bottom:0.5em;"><a href="#defs">Type Definitions</a></div>
-          <a href="#seto">seto</a> (v0.3.2)
+          <a href="#seto">seto</a> (v0.4.0)
           <ul>
+            
+            <li><a href="#seto/account">account</a></li>
+            
+            <li><a href="#seto/account-state">account-state</a></li>
+            
+            <li><a href="#seto/account-state-request">account-state-request</a></li>
             
             <li><a href="#seto/content-type">content-type</a></li>
             
@@ -31,7 +37,11 @@
             
             <li><a href="#seto/contract-type">contract-type</a></li>
             
+            <li><a href="#seto/currency">currency</a></li>
+            
             <li><a href="#seto/date">date</a></li>
+            
+            <li><a href="#seto/decimal">decimal</a></li>
             
             <li><a href="#seto/entity">entity</a></li>
             
@@ -339,6 +349,124 @@
       <h2 id="defs">Type Definitions</h2>
       
       <div id="seto">
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/account">
+          <span class="name">seto/account</span>
+          <span class="piqi_type">alias</span>
+          
+          <span>(<a href="#seto/uuid-128" class="type">seto/uuid-128</a>)</span>
+
+          
+        </h4>
+
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/account-state">
+          <span class="name">seto/account-state</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">account</span>
+          <span>(<a href="#seto/account" class="type">seto/account</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">currency</span>
+          <span>(<a href="#seto/currency" class="type">seto/currency</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">cash</span>
+          <span>(<a href="#seto/decimal" class="type">seto/decimal</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">bonus</span>
+          <span>(<a href="#seto/decimal" class="type">seto/decimal</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">exposure</span>
+          <span>(<a href="#seto/decimal" class="type">seto/decimal</a>)</span>
+
+          
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/account-state-request">
+          <span class="name">seto/account-state-request</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">account</span>
+          <span>(<a href="#seto/account" class="type">seto/account</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
       
       
       
@@ -843,6 +971,39 @@ contract_quotes{
       
       
       <div class="def">
+        <h3 id="seto/currency">
+          <span class="name">seto/currency</span>
+          <span class="piqi_type">enum</span>
+          
+        </h4>
+
+        
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">great-british-pound</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">euro</span>
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
         <h3 id="seto/date">
           <span class="name">seto/date</span>
           <span class="piqi_type">record</span>
@@ -873,6 +1034,49 @@ contract_quotes{
           <span>(<span class="type">uint32</span>)</span>
 
           
+          
+          </li>
+          
+        </ul>
+        
+
+        
+
+        
+
+      </div>
+      
+      
+      
+      
+      
+      <div class="def">
+        <h3 id="seto/decimal">
+          <span class="name">seto/decimal</span>
+          <span class="piqi_type">record</span>
+          
+        </h4>
+
+        
+        <ul>
+          
+          <li>
+          <span class="name">value</span>
+          <span>(<a href="#seto/int64" class="type">seto/int64</a>)</span>
+
+          
+          
+          </li>
+          
+          <li>
+          <span class="name">exponent</span>
+          <span>(<span class="type">uint32</span>)</span>
+
+          
+          <span class="default">Default: 2</span>
+          
+          
+          <span class="optional">[optional]</span>
           
           </li>
           
@@ -3351,6 +3555,26 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           
           </li>
           
+          <li>
+          <span class="name">account-state-request</span>
+          <span>(<a href="#seto/account-state-request" class="type">seto/account-state-request</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">account-state</span>
+          <span>(<a href="#seto/account-state" class="type">seto/account-state</a>)</span>
+
+          
+          
+          <span class="optional">[optional]</span>
+          
+          </li>
+          
         </ul>
         
 
@@ -3488,6 +3712,16 @@ This is the type <a href="#encode">encoded</a>, <a href="#framing">framed</a>, a
           
           <li>
           <span class="name">orders-for-market</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">account-state-request</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">account-state</span>
           
           </li>
           
