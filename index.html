@@ -12,13 +12,13 @@
       <h1><a href="http://smarkets.github.com/"><img src="logo.gif" class="logo" /></a>
           <a href=""><span>Streaming API Documentation</span></a></h1>
       <ul>
-        <li><strong>(v0.4.0)</strong></li>
+        <li><strong>(v0.4.1)</strong></li>
         <li><a href="">Introduction</a></li>
         <li><a href="#encode">Encoding Payloads</a></li>
         <li><a href="#framing">Framing</a></li>
         <li>
           <div style="margin-bottom:0.5em;"><a href="#defs">Type Definitions</a></div>
-          <a href="#seto">seto</a> (v0.4.0)
+          <a href="#seto">seto</a> (v0.4.1)
           <ul>
             
             <li><a href="#seto/account">account</a></li>
@@ -2681,6 +2681,9 @@ You'll most probably be calling this more than anything else in this API. In res
 To prevent your application from accidently creating more orders than it really wanted to you should always locally associate your orders within your application with the <a href="#eto/seq" class="type">seq</a> of the <a href="#eto/payload" class="type">eto/payload</a> you send to Smarkets for the current <a href="#eto/session" class="type">session</a>.
 </p>
 <p>
+<strong>quantity is *not* stake</strong> - quantity is the sum of both sides of the trade in minor units * 100. For example, a buy order of £10 stake at 25% would have quantity of 400000. Which is (1000[minor-units] / 0.25[price]) * 100. The sell trade to fully match this at the same price is exactly the same price and quantity, but with the side field set to buy.
+</p>
+<p>
 <em>If the <a href="#eto/seq" class="type">seq</a> for the <a href="#eto/payload" class="type">eto/payload</a> sent along with the <a href="#seto/payload" class="type">seto/payload</a> with type <span class="type">order-create</span> has a different outgoing <a href="#eto/seq" class="type">seq</a> number then <strong>it will result in a new order being created</strong>.</em>
 </p>
 </div>
@@ -2956,6 +2959,11 @@ The <a href="#eto/seq" class="type">seq</a> here refers to the <a href="#eto/seq
           
           <li>
           <span class="name">service-temporarily-unavailable</span>
+          
+          </li>
+          
+          <li>
+          <span class="name">contract-not-found</span>
           
           </li>
           
@@ -4821,7 +4829,7 @@ When a connection is first made <a href="#eto/login" class="type">login</a> and 
 </table>
 
 <p>
-This simple example is basically a payload and an *ack* style response, but once this initial step has taken place many incoming and outgoing payload can be sent potentially without any payload based acknowledgement. Acknowledgement is done by comparing the incoming message's sequence with the expected incoming sequence. If a process in your application performing a state transition based on an incoming payload crashes then you want to maintain that you have <em>not</em> processed that sequence number. To do this the expected next incoming sequence number should not be incremented, and when the next payload is received it will be incorrect by 1 step. To handle these cases a payload with type <a href="#eto/replay" class="type">replay</a> is sent.
+This simple example is basically a payload and an *ack* style response, but once this initial step has taken place many incoming and outgoing payload can be sent potentially without any payload based acknowledgement. Acknowledgement is done by comparing the incoming message's sequence with the expected incoming sequence. If a process in your application performing a state transition based on an incoming payload crashes then you want to maintain that you have <em>not</em> processed that sequence number. To do this the expected next incoming sequence number should not be incremented, and when the next payload is received it will be increment by 1 step. To handle these cases a payload with type <a href="#eto/replay" class="type">replay</a> is sent.
 </p>
 
 <p>
