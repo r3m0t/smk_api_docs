@@ -12,7 +12,7 @@
       <h1><a href="http://smarkets.github.com/"><img src="logo.gif" class="logo" /></a>
           <a href=""><span>Streaming API Documentation</span></a></h1>
       <ul>
-        <li><strong>(v0.5.0)</strong></li>
+        <li><strong>(v0.5.1)</strong></li>
         <li><a href="">Introduction</a></li>
         <li><a href="#encode">Encoding Payloads</a></li>
         <li><a href="#framing">Framing</a></li>
@@ -1130,6 +1130,22 @@ contract_quotes{
 
         
 
+        
+        <div class="description"><p>
+When the <span class="type">eto/downtime-alert-type</span> of a <a href="#eto/downtime-alert" class="type">eto/downtime-alert</a> is 
+set to <span class="type">functionality</span> then this <a href="#seto/payload" class="type">seto/payload</a> and type will also be specified.
+</p>
+<p>
+The only current functionality downtime is related to order placement and is specified as the <a href="#seto/downtime-alert-type">seto/downtime-alert-type</a> 
+<span class="type">order-create</span>. Orders will automatically be rejected with reason <span class="type">service-temporarily-unavailable</span> 
+during this downtime until service is resumed via another <a href="#eto/downtime-alert" class="type">eto/downtime-alert</a> with type 
+<span class="type">service-resumed</span>.
+</p>
+<p>
+For the expected datetime of the downtime the <a href="#eto/downtime-alert" class="type">eto/downtime-alert</a>'s 
+<span class="type">datetime</span> field should be consulted.
+</p>
+</div>
         
 
       </div>
@@ -4313,6 +4329,30 @@ Specify this as the <a href="#seto/events-request" class="type">events-request</
 
         
 
+        
+        <div class="description"><p>
+The purpose of this payload is to expose intentional downtime of either the api connection or a subset of functionality the api provider. 
+When the <a href="#eto/downtime-alert-type" class="type">eto/downtime-alert-type</a> is <span class="type">functionality</span> the 
+<a href="#seto/downtime-alert" class="type">seto/downtime-alert</a> specifies which functionality that will be unavailable.
+</p>
+<p>
+If the datetime is not defined then the downtime is expected immediately, otherwise it is expected at the specified datetime UTC.
+</p>
+<p>
+A <span class="type">connection</span> <a href="#eto/downtime-alert-type" class="type">eto/downtime-alert-type</a> signifies the planned 
+outage of all tcp connections to this api. When the downtime occurs all clients will be disconnected and expected to <em>reconnect with 
+  incremental backoff time between connection attempts</em>.
+</p>
+<p>
+A <span class="type">cancelled</span> <a href="#eto/downtime-alert-type" class="type">eto/downtime-alert-type</a> signifies that a previous
+downtime-alert is no longer applicable and service should not be disrupted at the previously given datetime. datetime is always undefined
+with cancelled downtime alerts.
+</p>
+<p>
+A <span class="type">service-resumed</span> <a href="#eto/downtime-alert-type" class="type">eto/downtime-alert-type</a> signifies that 
+normal service has resumed and the previous downtime-alert should now be disregarded.
+</p>
+</div>
         
 
       </div>
